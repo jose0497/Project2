@@ -13,6 +13,7 @@ public class Character extends Thread{
     public ArrayList<Image> sprite;
 
     public Character(int x, int y, int imgNum) {
+        //PRUEBAAA
         this.x = x;
         this.y = y;
         this.imgNum = imgNum;
