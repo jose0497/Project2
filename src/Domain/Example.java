@@ -20,30 +20,29 @@ import javax.imageio.ImageIO;
  */
 public class Example extends Character {
 
+    private boolean reverse = false;
     private int x;
     private int y;
-    private int inicialX;
-    private int inicialY;
-    
-    private int fastRunning;
     private ImageIO imageIO;
     private ArrayList<Image> sprite;
+    private boolean curve = false;
 
     public Example(int x, int y, int imgNum) throws FileNotFoundException, IOException {
         super(x, y, imgNum);
         setSprite();
-        inicialX=x;
-        inicialY=y;
         this.x = x;
         this.y = y;
-        this.fastRunning = 0;
+
     }
 
     public void setSprite() throws FileNotFoundException, IOException {
         sprite = super.getSprite();
 
-        for (int i = 0; i <= 7; i++) {
-            sprite.add(imageIO.read(new FileInputStream("src/Assets/SpritesSonic/" + i + ".png")));
+        for (int i = 0; i <= 9; i++) {
+            sprite.add(imageIO.read(new FileInputStream("src/Assets/SpritesMegamanX/" + i + ".png")));
+        }
+        for (int i = 0; i <= 9; i++) {
+            sprite.add(imageIO.read(new FileInputStream("src/Assets/SpritesMegamanX/" + i + "R" + ".png")));
         }
 
         super.setSprite(sprite);
@@ -54,238 +53,101 @@ public class Example extends Character {
         ArrayList<Image> sprite = super.getSprite();
         while (true) {
             try {
-                super.setImage(sprite.get(0));
+                
                 super.setX(x);
                 super.setY(y);
-                move(90, 1);
-                this.x=inicialX;
-                this.y=inicialY;
-            } catch (BootstrapMethodError br) {
-            } catch (InternalError err) {
+                rute1(20, 1);
+
+            } catch (BootstrapMethodError | InternalError br) {
             } catch (InterruptedException ex) {
+                Logger.getLogger(Example.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Throwable ex) {
                 Logger.getLogger(Example.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
     }
 
-    public void move(int repeat, int dir) throws InterruptedException {
+    public void rute1(int repeat, int dir) throws InterruptedException, Throwable {
         int countSprite = 0;
-        int countSpriteR = 31;
-
+        int countSpriteR = 10;
         if (dir == 1) {
             for (int i = 0; i <= repeat; i++) {
                 Thread.sleep(60);
-                super.setX(x);
-                super.setImage(sprite.get(countSprite));
-
-                x += 5;
-
-                if (countSprite == super.sprite.size() - 1) {
-                    countSprite = 0;
+                if (reverse == false) {
+                    if (countSprite >= 10) {
+                        countSprite = 0;
+                    }
+                    super.setImage(sprite.get(countSprite));
                 } else {
+                    if (countSpriteR >= 19) {
+                        countSpriteR = 10;
+                    }
+                    super.setImage(sprite.get(countSpriteR));
+                }
+                if (x < 560 && y > 160 && x >= 190 && curve == false) {
+                    x += 5;
+                    super.setX(x);
+                }
+
+                if (x >= 550 && y <= 266 && y >= 210 && curve == false) {
+                    x += 6;
+                    y -= 5;
+                    super.setX(x);
+                    super.setY(y);
+                }
+                if (y <= 228 && x >= 550 && y >= 163 && curve == false) {
+                    x -= 4;
+                    y -= 5;
+
+                    reverse = true;
+                    super.setX(x);
+                    super.setY(y);
+                }
+                if (y <= 162 && x >= 190 && curve == false) {
+                    if (x >= 550) {
+                        y -= 3;
+                    }
+                    x -= 6;
+                    super.setX(x);
+                    super.setY(y);
+                }
+
+                if (x <= 190 && x >= 145 && y <= 200) {
+                    if (y <= 225 && x <= 215) {
+                        curve = true;
+                        y += 4;
+                        x -= 4;
+                        super.setY(y);
+                        super.setX(x);
+                    }
+                }
+
+                if (x >= 135 && x <= 210 && y >= 195) {
+                    y += 3;
+                    x += 4;
+                    super.setY(y);
+                    super.setX(x);
+                    reverse = false;
+                } else if (x >= 210 && curve) {
+                    x += 5;
+
+                    super.setX(x);
+                }
+
+                if (countSprite >= 9) {
+                    countSprite = 0;
+                } else if(reverse==false) {
                     countSprite++;
                 }
 
-            }
-        }
-
-        if (dir == 2) {
-            for (int i = 0; i <= repeat; i++) {
-                Thread.sleep(70);
-                super.setX(x);
-                super.setImage(sprite.get(countSpriteR));
-                x -= 10;
-                if (countSpriteR == 40) {
-                    countSpriteR = 31;
-                } else {
+                if (countSpriteR >= 19 ) {
+                    countSpriteR = 10;
+                } else if(reverse){
                     countSpriteR++;
                 }
-            }
-        }
-    }
-
-    public void fastMove(int repeat) throws InterruptedException {
-        for (int i = 0; i <= repeat; i++) {
-
-            Thread.sleep(70);
-            super.setX(x);
-            super.setImage(sprite.get(fastRunning));
-            x += 20;
-            fastRunning++;
-            if (fastRunning == 7) {
-                fastRunning = 0;
-            }
-        }
-    }
-
-    public void jump(int repeat, int caida, int option) throws InterruptedException {
-        int count = 51;
-        if (option == 1) {
-            for (int i = 0; i <= repeat; i++) {
-
-                Thread.sleep(30);
-                super.setImage(sprite.get(9));
-                y -= 10;
-                super.setY(y);
-            }
-
-        } else {
-            //caida
-            for (int i = 0; i < 5; i++) {
-                super.setImage(sprite.get(count));
-                Thread.sleep(50);
-                y += 8;
-                super.setY(y);
-                count++;
-            }
-
-            super.setImage(sprite.get(10));
-            for (int i = 0; i <= caida; i++) {
-                Thread.sleep(25);
-                super.setImage(sprite.get(11));
-                y += 10;
-                super.setY(y);
 
             }
-            Thread.sleep(25);
-            super.setImage(sprite.get(12));
-        }
-    }
-
-    public void jumpMove(int repeat, int caida, int option) throws InterruptedException {
-        int count = 51;
-        if (option == 1) {
-            for (int i = 0; i <= repeat; i++) {
-
-                Thread.sleep(50);
-                super.setImage(sprite.get(9));
-                y -= 10;
-                x += 4;
-                super.setX(x);
-                super.setY(y);
-            }
-        } else {
-            //caida
-            for (int i = 0; i < 5; i++) {
-                super.setImage(sprite.get(count));
-                Thread.sleep(50);
-                y += 8;
-                x += 8;
-                super.setX(x);
-                super.setY(y);
-                count++;
-            }
-
-            super.setImage(sprite.get(10));
-            for (int i = 0; i <= caida; i++) {
-                Thread.sleep(40);
-                super.setImage(sprite.get(11));
-                y += 10;
-                x += 4;
-                super.setX(x);
-                super.setY(y);
-
-            }
-            Thread.sleep(40);
-            super.setImage(sprite.get(12));
-        }
-    }
-
-    public void reverseJump(int repeat, int caida, int option) throws InterruptedException {
-        if (option == 1) {
-            for (int i = 0; i <= repeat; i++) {
-
-                Thread.sleep(50);
-                super.setImage(sprite.get(24));
-                y -= 10;
-                super.setY(y);
-            }
-        } else {
-            //caida
-            super.setImage(sprite.get(25));
-            for (int i = 0; i <= caida; i++) {
-                Thread.sleep(40);
-                super.setImage(sprite.get(26));
-                y += 10;
-                super.setY(y);
-
-                if (i == caida) {
-
-                    Thread.sleep(40);
-                    super.setImage(sprite.get(27));
-                }
-
-            }
-            Thread.sleep(40);
-            super.setImage(sprite.get(28));
-        }
-
-        super.setImage(sprite.get(23));
-        Thread.sleep(100);
-    }
-
-    public void reverseJumpMove(int repeat, int caida, int option) throws InterruptedException {
-        int count = 57;
-        if (option == 1) {
-            for (int i = 0; i <= repeat; i++) {
-
-                Thread.sleep(50);
-                super.setImage(sprite.get(24));
-                y -= 10;
-                x -= 4;
-                super.setX(x);
-                super.setY(y);
-            }
-
-        } else {
-            //caida
-            for (int i = 0; i < 4; i++) {
-                super.setImage(sprite.get(count));
-                Thread.sleep(50);
-                y -= 8;
-                x -= 8;
-                super.setX(x);
-                super.setY(y);
-                count++;
-            }
-
-            super.setImage(sprite.get(25));
-            for (int i = 0; i <= caida; i++) {
-                Thread.sleep(40);
-                super.setImage(sprite.get(26));
-                y += 10;
-                x -= 3;
-                super.setX(x);
-                super.setY(y);
-                if (i == caida) {
-
-                    Thread.sleep(40);
-                    super.setImage(sprite.get(27));
-                }
-
-            }
-            super.setImage(sprite.get(23));
-            Thread.sleep(100);
-        }
-
-    }
-
-    public void stading(int repeat) throws InterruptedException {
-        int count = 28;
-
-        for (int i = 0; i <= repeat; i++) {
-            Thread.sleep(150);
-            super.setImage(sprite.get(count));
-
-            if (count == 30) {
-                Thread.sleep(150);
-                super.setImage(sprite.get(8));
-                count = 28;
-            } else {
-                count++;
-            }
-
         }
     }
 
