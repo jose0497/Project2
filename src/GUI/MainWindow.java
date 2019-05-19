@@ -101,7 +101,7 @@ public class MainWindow extends JFrame {
         private Thread thread;
         private Graphics buff;
         private Image imageBackground;
-        private Example example;
+        private Example example,example1,example2,example3,example4;
 
         public MainJPanel() throws IOException {
             this.label = new JLabel("......................");
@@ -111,7 +111,12 @@ public class MainWindow extends JFrame {
             this.setLayout(null);
             this.setVisible(true);
             this.add(label);
-            this.example= new Example(175, 75,0);
+            this.example= new Example(383, 260,0);
+            this.example1= new Example(383, 292,0);
+            this.example2= new Example(383, 325,0);
+            this.example3= new Example(383, 355,0);
+            this.example4= new Example(383, 386,0);
+            
             init();
             this.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
@@ -124,6 +129,11 @@ public class MainWindow extends JFrame {
             this.thread = new Thread(this);
             this.thread.start();
             this.example.start();
+            this.example1.start();
+            this.example2.start();
+            this.example3.start();
+             this.example4.start();
+            
         }
 
         protected void paintComponent(Graphics g) {
@@ -133,6 +143,7 @@ public class MainWindow extends JFrame {
             this.buff = image.getGraphics();
             draw(this.buff);
             g.drawImage(image, 0, 0, null);
+            
             try {
                 this.imageBackground = ImageIO.read(new FileInputStream("./src/Assets/Circuit.png"));
             } catch (FileNotFoundException ex) {
@@ -146,6 +157,10 @@ public class MainWindow extends JFrame {
             try {
                 g.drawImage(imageBackground, 0, 0, this);
                 g.drawImage(example.getImage(),example.getX(),example.getY(), this);
+                 g.drawImage(example1.getImage(),example1.getX(),example1.getY(), this);
+                 g.drawImage(example2.getImage(),example2.getX(),example2.getY(), this);
+                  g.drawImage(example3.getImage(),example3.getX(),example3.getY(), this);
+                   g.drawImage(example4.getImage(),example4.getX(),example4.getY(), this);
 
             } catch (NullPointerException npe) {
 
