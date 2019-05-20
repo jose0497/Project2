@@ -208,7 +208,7 @@ public class CharacterRute3 extends Character{
     } 
     public void moveTRAS() throws InterruptedException {
         
-        System.out.println("trasa");
+        System.out.println("tras");
         super.setImage(sprite.get(1));
         for (int i = this.indexPosition; i >= 0; i--) {
             Thread.sleep(180);
@@ -217,7 +217,6 @@ public class CharacterRute3 extends Character{
             super.setY(this.positions.get(i).getY());
             this.indexPosition = i;
             //fin del metodo
-            //prueba
         }
     }
 }
