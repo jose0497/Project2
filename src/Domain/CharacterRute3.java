@@ -13,12 +13,14 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author jose0
  */
-public class CharacterRute3 extends Character{
+public class CharacterRute3 extends Character {
+
     private ArrayList<Position> positions;
     private boolean reverse;
     private int x;
@@ -36,9 +38,7 @@ public class CharacterRute3 extends Character{
         this.x = x;
         this.y = y;
         this.reverse = false;
-        this.indexPosition = 60;
-        
-        
+
     }
 
     public void setSprite() throws FileNotFoundException, IOException {
@@ -76,12 +76,13 @@ public class CharacterRute3 extends Character{
         this.positions.add(new Position(632, 266));
         this.positions.add(new Position(635, 251));
         this.positions.add(new Position(640, 235));
-        this.positions.add(new Position(655, 209));
-        this.positions.add(new Position(640, 192));
-        this.positions.add(new Position(635, 170));
-        this.positions.add(new Position(632, 156));
-        this.positions.add(new Position(630, 145));
-        this.positions.add(new Position(600, 134));
+        this.positions.add(new Position(640, 209));
+        this.positions.add(new Position(645, 177));
+        this.positions.add(new Position(640, 150));
+        this.positions.add(new Position(635, 130));
+        this.positions.add(new Position(632, 110));
+        this.positions.add(new Position(630, 100));
+        this.positions.add(new Position(610, 90));
         //fin curva1
         //empieza recta de arriba, resto x
         this.positions.add(new Position(580, 90));
@@ -125,28 +126,43 @@ public class CharacterRute3 extends Character{
         //ultimo punto de recta arriba
         this.positions.add(new Position(177, 90));
         //empieza curva 2
-        this.positions.add(new Position(145, 148));
-        this.positions.add(new Position(125, 171));
-        this.positions.add(new Position(120, 192));
-        this.positions.add(new Position(118, 219));
-        this.positions.add(new Position(125, 243));
-        this.positions.add(new Position(141, 266));
-        this.positions.add(new Position(155, 284));
-        this.positions.add(new Position(173, 293));
-        this.positions.add(new Position(193, 290));
+        this.positions.add(new Position(153, 100));
+        this.positions.add(new Position(129, 120));
+        this.positions.add(new Position(118, 136));
+        this.positions.add(new Position(109, 159));
+        this.positions.add(new Position(103, 180));
+        this.positions.add(new Position(102, 193));
+        this.positions.add(new Position(100, 209));
+        this.positions.add(new Position(102, 226));
+        this.positions.add(new Position(103, 246));
+        this.positions.add(new Position(116, 263));
+        this.positions.add(new Position(124, 289));
+        this.positions.add(new Position(140, 304));
+        this.positions.add(new Position(157, 323));
         //termina curva 2, empieza recta final, sumo x
-        this.positions.add(new Position(210, 290));
-        this.positions.add(new Position(225, 290));
-        this.positions.add(new Position(240, 290));
-        this.positions.add(new Position(255, 290));
-        this.positions.add(new Position(270, 290));
-        this.positions.add(new Position(295, 290));
-        this.positions.add(new Position(310, 290));
-        this.positions.add(new Position(325, 290));
-        this.positions.add(new Position(340, 290));
-        this.positions.add(new Position(355, 290));
-        this.positions.add(new Position(370, 290));
-        this.positions.add(new Position(393, 290));
+        this.positions.add(new Position(210, 323));
+        this.positions.add(new Position(218, 323));
+        this.positions.add(new Position(225, 323));
+        this.positions.add(new Position(232, 323));
+        this.positions.add(new Position(240, 323));
+        this.positions.add(new Position(248, 323));
+        this.positions.add(new Position(255, 323));
+        this.positions.add(new Position(264, 323));
+        this.positions.add(new Position(270, 323));
+        this.positions.add(new Position(278, 323));
+        this.positions.add(new Position(295, 323));
+        this.positions.add(new Position(305, 323));
+        this.positions.add(new Position(310, 323));
+        this.positions.add(new Position(318, 323));
+        this.positions.add(new Position(325, 323));
+        this.positions.add(new Position(333, 323));
+        this.positions.add(new Position(340, 323));
+        this.positions.add(new Position(348, 323));
+        this.positions.add(new Position(355, 323));
+        this.positions.add(new Position(365, 323));
+        this.positions.add(new Position(370, 323));
+        this.positions.add(new Position(385, 323));
+        this.positions.add(new Position(393, 323));
         //llegamos a la meta
 
     }
@@ -159,6 +175,9 @@ public class CharacterRute3 extends Character{
                 Thread.sleep(20);
                 try {
                     while (!reverse) {
+                        moveDEL();
+                    }
+                    while (reverse) {
                         moveTRAS();
                     }
 
@@ -179,7 +198,6 @@ public class CharacterRute3 extends Character{
         int countSprite = 0;
         for (int i = this.indexPosition; i < this.positions.size(); i++) {
             if (i >= 11 && i <= 68) {
-                //countSprite = 10;
                 super.setImage(sprite.get(countSprite));
                 if (countSprite == 18) {
                     countSprite = 10;
@@ -188,7 +206,7 @@ public class CharacterRute3 extends Character{
 
                 }
             } else if (i >= 69 || i <= 11) {
-                
+
                 countSprite = aux;
                 if (countSprite == 9) {
                     countSprite = 0;
@@ -203,20 +221,49 @@ public class CharacterRute3 extends Character{
             super.setX(this.positions.get(i).getX());
             super.setY(this.positions.get(i).getY());
             this.indexPosition = i;
-            System.out.println(this.indexPosition);
         }
-    } 
+    }
+
     public void moveTRAS() throws InterruptedException {
-        
-        System.out.println("tras");
+        int aux = 0;
+        int countSprite = 10;
         super.setImage(sprite.get(1));
         for (int i = this.indexPosition; i >= 0; i--) {
+            if (i >= 25 && i <= 69) {
+                countSprite = aux;
+                if (countSprite == 9) {
+                    countSprite = 0;
+                    aux = 0;
+                } else {
+                    countSprite++;
+                    aux = countSprite;
+                }
+                super.setImage(sprite.get(countSprite));
+            } else if ((i <= 100 && i >= 70) || i <= 24) {
+
+                super.setImage(sprite.get(countSprite));
+                if (countSprite == 18) {
+                    countSprite = 10;
+                } else {
+                    countSprite++;
+
+                }
+            }
+
             Thread.sleep(180);
-            System.out.println(i);
             super.setX(this.positions.get(i).getX());
             super.setY(this.positions.get(i).getY());
             this.indexPosition = i;
             //fin del metodo
         }
     }
+
+    public int getIndexPosition() {
+        return indexPosition;
+    }
+
+    public void setIndexPosition(int indexPosition) {
+        this.indexPosition = indexPosition;
+    }
+
 }

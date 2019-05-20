@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -27,6 +28,7 @@ public class CharacterRute2 extends Character {
     private ImageIO imageIO;
     private ArrayList<Image> sprite;
     private boolean curve = false;
+    private int indexPosition;
 
     public CharacterRute2(int x, int y, int imgNum) throws FileNotFoundException, IOException {
         super(x, y, imgNum);
@@ -159,6 +161,9 @@ public class CharacterRute2 extends Character {
                     while (!reverse) {
                         moveDEL();
                     }
+                    while (reverse) {
+                        moveTRAS();
+                    }
 
                 } catch (BootstrapMethodError | InternalError br) {
                 } catch (Throwable ex) {
@@ -175,7 +180,7 @@ public class CharacterRute2 extends Character {
     public void moveDEL() throws InterruptedException {
         int aux = 0;
         int countSprite = 0;
-        for (int i = 0; i < this.positions.size(); i++) {
+        for (int i = this.indexPosition; i < this.positions.size(); i++) {
             if (i >= 11 && i <= 68) {
                 //countSprite = 10;
                 super.setImage(sprite.get(countSprite));
@@ -200,7 +205,50 @@ public class CharacterRute2 extends Character {
             Thread.sleep(200);
             super.setX(this.positions.get(i).getX());
             super.setY(this.positions.get(i).getY());
+            this.indexPosition = i;
         }
+    }
+
+    public void moveTRAS() throws InterruptedException {
+        int aux = 0;
+        int countSprite = 10;
+        super.setImage(sprite.get(1));
+        for (int i = this.indexPosition; i >= 0; i--) {
+            if (i >= 25 && i <= 64) {
+                countSprite = aux;
+                if (countSprite == 9) {
+                    countSprite = 0;
+                    aux = 0;
+                } else {
+                    countSprite++;
+                    aux = countSprite;
+                }
+                super.setImage(sprite.get(countSprite));
+            } else if ((i <= 85 && i >= 65) || i <= 24) {
+
+                super.setImage(sprite.get(countSprite));
+                if (countSprite == 18) {
+                    countSprite = 10;
+                } else {
+                    countSprite++;
+
+                }
+            }
+
+            Thread.sleep(180);
+            super.setX(this.positions.get(i).getX());
+            super.setY(this.positions.get(i).getY());
+            this.indexPosition = i;
+            //fin del metodo
+        }
+    }
+
+    public int getIndexPosition() {
+        return indexPosition;
+    }
+
+    public void setIndexPosition(int indexPosition) {
+        this.indexPosition = indexPosition;
     }
 
 }
