@@ -217,6 +217,7 @@ public class CharacterRute3 extends Character{
             super.setY(this.positions.get(i).getY());
             this.indexPosition = i;
             //fin del metodo
+            //prueba
         }
     }
 }
