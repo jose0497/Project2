@@ -26,6 +26,7 @@ public class CharacterRute3 extends Character{
     private ImageIO imageIO;
     private ArrayList<Image> sprite;
     private boolean curve = false;
+    private int indexPosition;
 
     public CharacterRute3(int x, int y, int imgNum) throws FileNotFoundException, IOException {
         super(x, y, imgNum);
@@ -35,7 +36,9 @@ public class CharacterRute3 extends Character{
         this.x = x;
         this.y = y;
         this.reverse = false;
-
+        this.indexPosition = 60;
+        
+        
     }
 
     public void setSprite() throws FileNotFoundException, IOException {
@@ -156,7 +159,7 @@ public class CharacterRute3 extends Character{
                 Thread.sleep(20);
                 try {
                     while (!reverse) {
-                        moveDEL();
+                        moveTRAS();
                     }
 
                 } catch (BootstrapMethodError | InternalError br) {
@@ -174,7 +177,7 @@ public class CharacterRute3 extends Character{
     public void moveDEL() throws InterruptedException {
         int aux = 0;
         int countSprite = 0;
-        for (int i = 0; i < this.positions.size(); i++) {
+        for (int i = this.indexPosition; i < this.positions.size(); i++) {
             if (i >= 11 && i <= 68) {
                 //countSprite = 10;
                 super.setImage(sprite.get(countSprite));
@@ -199,6 +202,20 @@ public class CharacterRute3 extends Character{
             Thread.sleep(180);
             super.setX(this.positions.get(i).getX());
             super.setY(this.positions.get(i).getY());
+            this.indexPosition = i;
+            System.out.println(this.indexPosition);
+        }
+    } 
+    public void moveTRAS() throws InterruptedException {
+        
+        System.out.println("trasa");
+        super.setImage(sprite.get(1));
+        for (int i = this.indexPosition; i >= 0; i--) {
+            Thread.sleep(180);
+            System.out.println(i);
+            super.setX(this.positions.get(i).getX());
+            super.setY(this.positions.get(i).getY());
+            this.indexPosition = i;
         }
     }
 }
